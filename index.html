@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Finance Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 400px;
+            margin: auto;
+            margin-top: 40px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        input,
+        select,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .list {
+            margin-top: 20px;
+        }
+
+        .item {
+            background: #eee;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+        }
+
+        .income {
+            color: green;
+        }
+
+        .expense {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Finance Dashboard</h2>
+
+        <!-- Add Transaction -->
+        <input type="text" id="desc" placeholder="Description">
+        <input type="number" id="amount" placeholder="Amount">
+
+        <select id="type">
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+        </select>
+
+        <button onclick="addTransaction()">Add Transaction</button>
+
+        <!-- Summary -->
+        <h3>Total Balance: ₹ <span id="balance">0</span></h3>
+
+        <!-- List -->
+        <div class="list" id="list"></div>
+    </div>
+
+    <script>
+        let transactions = [];
+
+        function addTransaction() {
+            let desc = document.getElementById("desc").value;
+            let amount = parseFloat(document.getElementById("amount").value);
+            let type = document.getElementById("type").value;
+
+            if (!desc || isNaN(amount)) {
+                alert("Enter valid data");
+                return;
+            }
+
+            let transaction = {
+                desc,
+                amount,
+                type
+            };
+            transactions.push(transaction);
+
+            displayTransactions();
+            calculateBalance();
+        }
+
+        function displayTransactions() {
+            let list = document.getElementById("list");
+            list.innerHTML = "";
+
+            transactions.forEach(t => {
+                let div = document.createElement("div");
+                div.classList.add("item", t.type);
+                div.innerText = `${t.desc} - ₹${t.amount}`;
+                list.appendChild(div);
+            });
+        }
+
+        function calculateBalance() {
+            let balance = 0;
+
+            transactions.forEach(t => {
+                if (t.type === "income") {
+                    balance += t.amount;
+                } else {
+                    balance -= t.amount;
+                }
+            });
+
+            document.getElementById("balance").innerText = balance;
+        }
+    </script>
+
+</body>
+
+</html>
